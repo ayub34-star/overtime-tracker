@@ -916,6 +916,17 @@ body.dark .user-item b{color:#fff}body.dark .user-item small{color:#B8C2DA}
 
 .mp{position:fixed!important;z-index:400!important}
 .dh2-hero{z-index:30}.dh2-tot:has(.dh-month.open){z-index:40}
+
+/* v21: sheet tidak menimpa header; header profil oranye */
+.dh2-sheet{margin-top:16px!important}
+.dh2-hero{padding-bottom:26px!important}
+.profile-cover{background:radial-gradient(circle at 12% 0%,rgba(255,255,255,.18),transparent 40%),linear-gradient(160deg,#F8570A 0%,#F96A12 55%,#FA7C1C 100%)!important;box-shadow:0 14px 34px rgba(250,98,10,.2)}
+.profile-cover::before{background:radial-gradient(circle at 98% -6%,rgba(95,35,6,.38) 0 78px,transparent 79px),radial-gradient(circle at 80% -8%,rgba(95,35,6,.3) 0 58px,transparent 59px),radial-gradient(circle at -4% 104%,rgba(95,35,6,.42) 0 96px,transparent 97px)!important}
+.profile-cover::after{opacity:.55;filter:none}
+.profile-wm{position:relative;z-index:1;margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.92);text-shadow:0 2px 6px rgba(80,25,0,.55),0 0 14px rgba(80,25,0,.35)}
+.profile-main p{color:rgba(255,255,255,.88)!important}
+.profile-stat{background:rgba(16,24,43,.30)!important;border:1px solid rgba(255,255,255,.22)!important}
+.profile-stat span{color:#fff!important}.profile-stat b{color:#fff}.profile-stat small{color:#fff!important;opacity:.9}
 </style></head><body><script>(function(){function box(m){try{var d=document.getElementById('otdiag');if(!d){d=document.createElement('div');d.id='otdiag';d.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99999;background:#b91c1c;color:#fff;padding:10px 14px;font:13px/1.4 monospace;white-space:pre-wrap';(document.body||document.documentElement).appendChild(d)}d.textContent+=m+'\n'}catch(x){}}window.__otbox=box;window.addEventListener('error',function(e){box('ERROR[10d]: '+e.message+(e.lineno?' [baris '+e.lineno+':'+e.colno+']':'')+(e.filename?' '+String(e.filename).slice(-40):''))});window.addEventListener('unhandledrejection',function(e){box('REJECT: '+(e.reason&&e.reason.message||e.reason))})})()</script>
 
 <div id="login"><div class="lg-hero"><i class="lg-b b1"></i><i class="lg-b b2"></i><i class="lg-b b3"></i><i class="lg-dots"></i>
@@ -1137,7 +1148,7 @@ function wrapTables(){document.querySelectorAll('#main table').forEach(t=>{const
 function subItem(k,extra){const m=SUBS[k];return`<button class="user-item" onclick="setSub('${k}')"><span class="ui-icon" style="background:${m[3]};color:${m[4]}">${m[0]}</span><span class="ui-copy"><b>${m[1]}</b><small>${m[2]}</small></span>${extra||''}<span class="chev">›</span></button>`}
 function vUser(){if(ADM_SUBS.indexOf(US)>=0&&!D.admin)US='';if(US==='telegram'&&!(D.me&&D.me.tgOk))US='';if(US&&SUBS[US])return vSub();
  const me=D.me||{username:'',nama:$('#who').textContent||'Pengguna'},dark=document.body.classList.contains('dark'),t=otTot(F.m,F.y),days=new Set(otP(F.m,F.y).map(o=>o.tanggal)).size,nm=me.nama||me.username||'Pengguna',initial=nm.trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
- return`<section class="profile-exec"><div class="profile-cover"><div class="profile-main"><div class="profile-photo">${me.foto?`<img src="${esc(me.foto)}" alt="Foto profil">`:esc(initial)}</div><div><h2>${esc(nm)}</h2><p>@${esc(me.username||'')} · ${D.admin?'Administrator':'Pengguna aktif'}</p></div></div><div class="profile-stats"><div class="profile-stat"><span>Lembur bulan ini</span><b>${fj(t.jam)}</b><small>jam</small></div><div class="profile-stat"><span>Hari lembur</span><b>${days}</b><small>hari</small></div></div></div></section>
+ return`<section class="profile-exec"><div class="profile-cover"><div class="profile-wm">Overtime Tracker</div><div class="profile-main"><div class="profile-photo">${me.foto?`<img src="${esc(me.foto)}" alt="Foto profil">`:esc(initial)}</div><div><h2>${esc(nm)}</h2><p>@${esc(me.username||'')} · ${D.admin?'Administrator':'Pengguna aktif'}</p></div></div><div class="profile-stats"><div class="profile-stat"><span>Lembur bulan ini</span><b>${fj(t.jam)}</b><small>jam</small></div><div class="profile-stat"><span>Hari lembur</span><b>${days}</b><small>hari</small></div></div></div></section>
  <div class="setting-section-title">Tampilan aplikasi</div><div class="user-menu"><div class="user-item static"><span class="ui-icon" style="background:#17233D;color:#F8570A">${SV(dark?'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/>',20)}</span><span class="ui-copy"><b>Tema aplikasi</b><small>Pilih tampilan terang atau gelap</small></span><div class="seg"><button class="${dark?'':'on'}" onclick="setTheme(false)">Terang</button><button class="${dark?'on':''}" onclick="setTheme(true)">Gelap</button></div></div></div>
  <div class="setting-section-title">Pengaturan akun</div><div class="user-menu">${subItem('profile')}${subItem('password')}${subItem('notif')}${subItem('saran')}${D.me&&D.me.tgOk?subItem('telegram'):''}</div>
  ${D.admin?`<div class="setting-section-title">Khusus administrator</div><div class="user-menu">${subItem('users')}${subItem('reset',+D.resets>0?`<span class="bdg">${+D.resets}</span>`:'')}${subItem('login')}${subItem('inbox')}</div>`:''}
