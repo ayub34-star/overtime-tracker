@@ -913,6 +913,9 @@ body.dark .user-item b{color:#fff}body.dark .user-item small{color:#B8C2DA}
 
 .tbn{margin:12px 2px 4px;font-size:13.5px;line-height:1.45;color:#44506b;text-align:center}.tbn b{color:#F8570A}
 .tbc{display:flex;gap:8px;align-items:center;justify-content:center;margin:8px 0 0;font-size:13px;color:#44506b;font-weight:600}.tbc input{width:auto!important;height:auto!important;accent-color:#F8570A}
+
+.mp{position:fixed!important;z-index:400!important}
+.dh2-hero{z-index:30}.dh2-tot:has(.dh-month.open){z-index:40}
 </style></head><body><script>(function(){function box(m){try{var d=document.getElementById('otdiag');if(!d){d=document.createElement('div');d.id='otdiag';d.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99999;background:#b91c1c;color:#fff;padding:10px 14px;font:13px/1.4 monospace;white-space:pre-wrap';(document.body||document.documentElement).appendChild(d)}d.textContent+=m+'\n'}catch(x){}}window.__otbox=box;window.addEventListener('error',function(e){box('ERROR[10d]: '+e.message+(e.lineno?' [baris '+e.lineno+':'+e.colno+']':'')+(e.filename?' '+String(e.filename).slice(-40):''))});window.addEventListener('unhandledrejection',function(e){box('REJECT: '+(e.reason&&e.reason.message||e.reason))})})()</script>
 
 <div id="login"><div class="lg-hero"><i class="lg-b b1"></i><i class="lg-b b2"></i><i class="lg-b b3"></i><i class="lg-dots"></i>
@@ -1035,8 +1038,10 @@ let MPY=0;
 const monthSel=ic=>`<div class="dh-month"><button type="button" class="mbtn2" onclick="mpToggle(event)" aria-haspopup="true" aria-expanded="false"><span class="dh-ico">${SV(ic,20)}</span><b>${BLN[F.m-1]} ${F.y}</b><span class="cv">${SV(P_.chd,18)}</span></button><div class="mp" onclick="event.stopPropagation()"></div></div>`;
 function mpHtml(){const y=MPY,y0=now.getFullYear()-3,y1=now.getFullYear()+2,cy=now.getFullYear(),cm=now.getMonth();
  return`<div class="mp-h"><button type="button" onclick="mpYear(-1)" ${y<=y0?'disabled':''} aria-label="Tahun sebelumnya">${SV(P_.chl,18)}</button><b>${y}</b><button type="button" onclick="mpYear(1)" ${y>=y1?'disabled':''} aria-label="Tahun berikutnya">${SV(P_.chr,18)}</button></div><div class="mp-g">${BLN.map((n,i)=>`<button type="button" class="${y==F.y&&i+1==F.m?'on':''} ${y==cy&&i==cm?'now':''}" onclick="setPeriod('${y}-${i+1}')">${n.slice(0,3)}</button>`).join('')}</div><button type="button" class="mp-t" onclick="setPeriod('${cy}-${cm+1}')">Bulan ini</button>`}
-function mpToggle(e){e.stopPropagation();const b=e.currentTarget,w=b.parentElement,open=!w.classList.contains('open');mpClose();if(open){MPY=F.y;w.querySelector('.mp').innerHTML=mpHtml();w.classList.add('open');b.setAttribute('aria-expanded','true')}}
+function mpToggle(e){e.stopPropagation();const b=e.currentTarget,w=b.parentElement,open=!w.classList.contains('open');mpClose();if(open){MPY=F.y;w.querySelector('.mp').innerHTML=mpHtml();w.classList.add('open');b.setAttribute('aria-expanded','true');mpPlace(w)}}
 function mpYear(d){MPY+=d;const p=document.querySelector('.dh-month.open .mp');if(p)p.innerHTML=mpHtml()}
+function mpPlace(w){const p=w.querySelector('.mp'),r=w.querySelector('.mbtn2').getBoundingClientRect(),W=Math.min(292,innerWidth-32);p.style.right='auto';p.style.top='0px';p.style.left='0px';const o=p.getBoundingClientRect();p.style.top=(r.bottom+8-o.top)+'px';p.style.left=(Math.max(16,Math.min(r.right-W,innerWidth-W-16))-o.left)+'px'}
+addEventListener('resize',()=>mpClose());addEventListener('scroll',()=>mpClose(),{passive:true,capture:true});
 function mpClose(){document.querySelectorAll('.dh-month.open').forEach(w=>{w.classList.remove('open');const b=w.querySelector('.mbtn2');if(b)b.setAttribute('aria-expanded','false')})}
 document.addEventListener('click',mpClose);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')mpClose()});
